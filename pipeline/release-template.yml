@@ -22,7 +22,7 @@ jobs:
               targetPath: '$(Pipeline.Workspace)'
           - task: AzureFunctionApp@1 # Add this at the end of your file
             inputs:
-              azureSubscription: MPN Andreas Hahn
+              azureSubscription: azure-surveillance-connection
               appType: functionAppWindows
               appName: surveillance-image-processing
               package: $(System.ArtifactsDirectory)/**/Surveillance.Function.ImageProcessing.zip
