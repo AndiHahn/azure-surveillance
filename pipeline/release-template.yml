@@ -5,11 +5,6 @@ parameters:
 - name: environment
   type: string
 
-variables:
-  azureSubscription: MPN Andreas Hahn
-  appName: surveillance-image-processing
-  vmImageName: 'windows-latest'
-
 jobs:
   - deployment: DeployFunction
     displayName: 'Deploy function'
@@ -27,7 +22,7 @@ jobs:
               targetPath: '$(Pipeline.Workspace)'
           - task: AzureFunctionApp@1 # Add this at the end of your file
             inputs:
-              azureSubscription: $(azureSubscription)
+              azureSubscription: MPN Andreas Hahn
               appType: functionAppWindows
-              appName: $(appName)
+              appName: surveillance-image-processing
               package: $(System.ArtifactsDirectory)/**/Surveillance.Function.ImageProcessing.zip
