@@ -17,6 +17,7 @@ jobs:
           steps:
           - task: DownloadPipelineArtifact@2
             displayName: 'Downloading artifact'
+            artifact: drop
             inputs:
               buildType: 'current'
               targetPath: '$(Pipeline.Workspace)'
@@ -25,4 +26,4 @@ jobs:
               azureSubscription: azure-surveillance-connection
               appType: functionAppWindows
               appName: surveillance-image-processing
-              package: $(System.DefaultWorkingDirectory)/drop/Surveillance.Function.ImageProcessing.zip 
+              package: $(System.ArtifactsDirectory)/**/Surveillance.Function.ImageProcessing.zip 
