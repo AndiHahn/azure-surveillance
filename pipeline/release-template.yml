@@ -25,4 +25,4 @@ jobs:
               azureSubscription: azure-surveillance-connection
               appType: functionAppWindows
               appName: surveillance-image-processing
-              package: $(System.ArtifactsDirectory)/**/Surveillance.Function.ImageProcessing.zip
+              package: $(System.ArtifactsDirectory)/drop/Surveillance.Function.ImageProcessing.zip 
