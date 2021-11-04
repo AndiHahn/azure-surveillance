@@ -15,12 +15,6 @@ jobs:
       runOnce:
         deploy:
           steps:
-          - task: DownloadPipelineArtifact@2
-            displayName: 'Downloading artifact'
-            inputs:
-              buildType: 'current'
-              artifact: drop
-              targetPath: '$(Pipeline.Workspace)'
           - task: AzureFunctionApp@1 # Add this at the end of your file
             inputs:
               azureSubscription: azure-surveillance-connection
