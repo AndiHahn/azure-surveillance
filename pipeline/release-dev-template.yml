@@ -1,0 +1,33 @@
+parameters:
+- name: variableGroup
+  type: string
+
+- name: environment
+  type: string
+
+variables:
+  azureSubscription: MPN Andreas Hahn
+  appName: surveillance-image-processing
+  vmImageName: 'windows-latest'
+
+jobs:
+  - deployment: DeployFunction
+    displayName: 'Deploy function'
+    variables:
+      - group: ${{ parameters.variableGroup }} # points to variable group in Azure DevOps
+    environment: ${{ parameters.environment }} # points to environments in Azure DevOps
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Downloading artifact'
+            inputs:
+              buildType: 'current'
+              targetPath: '$(Pipeline.Workspace)'
+          - task: AzureFunctionApp@1 # Add this at the end of your file
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: functionAppWindows
+              appName: $(appName)
+              package: $(System.ArtifactsDirectory)/**/Surveillance.Function.ImageProcessing.zip

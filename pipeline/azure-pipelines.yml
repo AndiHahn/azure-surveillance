@@ -1,0 +1,53 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: "windows-latest"
+
+variables:
+  solution: "**/*.sln"
+  buildPlatform: "Any CPU"
+  buildConfiguration: "Release"
+  releaseTemplate: 'release-template.yml'
+
+stages:
+- stage: CI
+  displayName: build
+  jobs: 
+  - job: build_and_publish_backend
+    steps:
+    - task: NuGetToolInstaller@1
+
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: "$(solution)"
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: "build"
+        projects: |
+          **/*.sln
+        arguments: "--configuration $(BuildConfiguration)"
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish Azure Function
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: |
+          **/Surveillance.Function.ImageProcessing.csproj
+        arguments: "--no-build --configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/"
+
+    - task: PublishBuildArtifacts@1
+      displayName: "Publish Artifact"
+
+- stage: 'Dev'
+  displayName: 'Dev Deployment'
+  dependsOn: CI
+  jobs:
+  - template: ${{ variables.releaseTemplate }}
+    parameters:
+      variableGroup: 'Development'
+      environment: 'Development'
