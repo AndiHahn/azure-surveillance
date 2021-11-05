@@ -1,4 +1,6 @@
-﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using System;
+using Azure.Identity;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Surveillance.Function.ImageProcessing;
@@ -28,6 +30,27 @@ namespace Surveillance.Function.ImageProcessing
             services.AddLogging();
 
             services.BuildServiceProvider(true);
+        }
+
+        public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
+        {
+            string keyVaultUri = Environment.GetEnvironmentVariable("AzureKeyVaultUri");
+
+            var credentialOptions = new DefaultAzureCredentialOptions
+            {
+                ExcludeAzureCliCredential = true,
+                ExcludeAzurePowerShellCredential = true,
+                ExcludeEnvironmentCredential = true,
+                ExcludeInteractiveBrowserCredential = false,
+                ExcludeManagedIdentityCredential = false,
+                ExcludeSharedTokenCacheCredential = true,
+                ExcludeVisualStudioCodeCredential = false,
+                ExcludeVisualStudioCredential = false
+            };
+
+            builder.ConfigurationBuilder.AddAzureKeyVault(
+                new Uri(keyVaultUri),
+                new DefaultAzureCredential(credentialOptions));
         }
     }
 }

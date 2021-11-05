@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+
+    "AzureKeyVaultUri": "https://surveillance-keyvault.vault.azure.net/",
+    "AzureBlobStorageConnectionString": null,
+    "CognitiveServicesEndpoint": "https://surveillance-cognitive-services.cognitiveservices.azure.com/",
+    "CognitiveServicesApiKey": null,
+    "EventGridTopicEndpoint": "https://surveillance-topic.westeurope-1.eventgrid.azure.net/api/events",
+    "EventGridTopicKey": null,
+    "CosmosDbConnectionString": null,
+    "CosmosDbDatabaseName": "surveillance-db",
+    "CosmosDbContainer": "surveillance-container"
+  }
+}
