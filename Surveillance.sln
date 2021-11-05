@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D452B7BA-65D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Surveillance.Function.ImageProcessing", "src\Surveillance.Function.ImageProcessing\Surveillance.Function.ImageProcessing.csproj", "{2FE555D2-0510-4695-84E9-7E9DEDE6F83E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline", "pipeline", "{189FC334-1D62-4A25-985D-C98E75E1EFC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -7,6 +7,7 @@ using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Surveillance.Function.ImageProcessing.Infrastructure.Interface;
 using Surveillance.Function.ImageProcessing.Models;
 
@@ -58,7 +59,14 @@ namespace Surveillance.Function.ImageProcessing
 
             log.LogInformation("Store image detection result...");
 
-            var entity = new ImageResultEntity(detectedPersons.Count(), eventGridEvent.EventTime, detectionResult);
+
+            var deserializedEventData = JsonConvert.DeserializeObject<BlobCreatedEventData>(eventGridEvent.Data.ToString());
+
+            var entity = new ImageResultEntity(
+                deserializedEventData.Url,
+                detectedPersons.Count(),
+                eventGridEvent.EventTime,
+                detectionResult);
             await imageResultRepository.StoreResultAsync(entity);
 
             log.LogInformation("Finished image uploaded processing.");

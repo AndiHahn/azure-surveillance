@@ -7,6 +7,9 @@ namespace Surveillance.Function.ImageProcessing.Models
     public class ImageResultEntity : BaseDocumentEntity
     {
         [JsonProperty]
+        public string ImageUrl { get; private set; }
+
+        [JsonProperty]
         public int NrOfPersonsDetected { get; private set; }
 
         [JsonProperty]
@@ -21,11 +24,13 @@ namespace Surveillance.Function.ImageProcessing.Models
         }
 
         public ImageResultEntity(
+            string imageUrl,
             int nrOfPersonsDetected,
             DateTime capturedAt,
             DetectResult detectResult)
             : base(Identifier.PartitionKey())
         {
+            this.ImageUrl = imageUrl;
             this.NrOfPersonsDetected = nrOfPersonsDetected;
             this.CapturedAt = capturedAt;
             this.DetectResult = detectResult;

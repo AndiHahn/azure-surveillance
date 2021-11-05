@@ -21,7 +21,7 @@ jobs:
               buildType: 'current'
               artifact: drop
               targetPath: '$(System.ArtifactsDirectory)'
-          - task: AzureFunctionApp@1 # Add this at the end of your file
+          - task: AzureFunctionApp@1
             inputs:
               azureSubscription: azure-surveillance-connection
               appType: functionAppWindows
