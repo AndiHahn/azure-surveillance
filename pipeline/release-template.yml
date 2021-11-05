@@ -15,9 +15,15 @@ jobs:
       runOnce:
         deploy:
           steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Downloading artifact'
+            inputs:
+              buildType: 'current'
+              artifact: drop
+              targetPath: '$(System.ArtifactsDirectory)'
           - task: AzureFunctionApp@1 # Add this at the end of your file
             inputs:
               azureSubscription: azure-surveillance-connection
               appType: functionAppWindows
               appName: surveillance-image-processing
-              package: $(System.DefaultWorkingDirectory)/**/Surveillance.Function.ImageProcessing.zip 
+              package: $(System.ArtifactsDirectory)/**/Surveillance.Function.ImageProcessing.zip 
