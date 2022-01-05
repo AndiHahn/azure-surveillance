@@ -23,7 +23,13 @@ jobs:
               targetPath: '$(System.ArtifactsDirectory)'
           - task: AzureFunctionApp@1
             inputs:
-              azureSubscription: azure-surveillance-connection
+              azureSubscription: azure-rm-surv-connection
               appType: functionAppWindows
-              appName: surveillance-image-processing
+              appName: surv-image-processing
               package: $(System.ArtifactsDirectory)/**/Surveillance.Function.ImageProcessing.zip 
+          - task: AzureFunctionApp@1
+            inputs:
+              azureSubscription: azure-rm-surv-connection
+              appType: functionAppWindows
+              appName: surv-persistence
+              package: $(System.ArtifactsDirectory)/**/Surveillance.Function.Persistence.zip 

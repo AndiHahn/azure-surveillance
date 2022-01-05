@@ -10,7 +10,9 @@ variables:
   solution: "**/*.sln"
   buildPlatform: "Any CPU"
   buildConfiguration: "Release"
-  releaseTemplate: 'release-template.yml'
+  azureServiceConnection: "azure-rm-surv-connection"
+  bicepTemplateFile: "../bicep/main.bicep"
+  releaseTemplate: "release-template.yml"
 
 stages:
 - stage: CI
@@ -32,7 +34,7 @@ stages:
         arguments: "--configuration $(BuildConfiguration)"
 
     - task: DotNetCoreCLI@2
-      displayName: Publish Azure Function
+      displayName: Publish Image Processing Azure Function
       inputs:
         command: publish
         publishWebProjects: false
@@ -40,12 +42,35 @@ stages:
           **/Surveillance.Function.ImageProcessing.csproj
         arguments: "--no-build --configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/"
 
+    - task: DotNetCoreCLI@2
+      displayName: Publish Persistence Azure Function
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: |
+          **/Surveillance.Function.Persistence.csproj
+        arguments: "--no-build --configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/"
+
     - task: PublishBuildArtifacts@1
       displayName: "Publish Artifact"
 
-- stage: 'Dev'
-  displayName: 'Dev Deployment'
+- stage: 'Infrastructure'
+  displayName: 'Infrastructure provisioning'
   dependsOn: CI
+  jobs:
+  - job: Bicep_infrastructure_provisioning
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: $(azureServiceConnection)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          az deployment sub create --location "westeurope" --template-file $(bicepTemplateFile)
+
+- stage: 'Prod'
+  displayName: 'Prod Deployment'
+  dependsOn: Infrastructure
   jobs:
   - template: ${{ variables.releaseTemplate }}
     parameters:
