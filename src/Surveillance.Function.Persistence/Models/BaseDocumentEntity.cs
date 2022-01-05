@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Surveillance.Function.ImageProcessing.Models
+namespace Surveillance.Function.Persistence.Models
 {
     public abstract class BaseDocumentEntity
     {

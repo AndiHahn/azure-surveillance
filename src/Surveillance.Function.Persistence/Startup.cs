@@ -5,12 +5,11 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.DependencyInjection;
-using Surveillance.Function.ImageProcessing;
-using Surveillance.Function.ImageProcessing.Infrastructure;
-using Surveillance.Function.ImageProcessing.Infrastructure.Interface;
+using Surveillance.Function.Persistence;
+using Surveillance.Function.Persistence.Infrastructure;
 
 [assembly: FunctionsStartup(typeof(Startup))]
-namespace Surveillance.Function.ImageProcessing
+namespace Surveillance.Function.Persistence
 {
     public class Startup : FunctionsStartup
     {
@@ -23,7 +22,7 @@ namespace Surveillance.Function.ImageProcessing
         {
             var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
 
-            services.AddSingleton<IObjectDetectionService, ObjectDetectionService>();
+            services.AddSingleton<IImageResultRepository, ImageResultRepository>();
 
             services.Configure<AppConfiguration>(configuration);
 

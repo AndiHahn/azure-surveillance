@@ -5,11 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Surveillance.Function.ImageProcessing.Infrastructure.Interface;
 using Surveillance.Function.ImageProcessing.Models;
+using Surveillance.Shared.Models;
+using Surveillance.Shared.Queue;
 
 namespace Surveillance.Function.ImageProcessing
 {
@@ -19,26 +20,22 @@ namespace Surveillance.Function.ImageProcessing
         public const string ObjectPersonIdentifier = "person";
 
         private readonly IObjectDetectionService objectDetectionService;
-        private readonly IEventGridService eventGridService;
-        private readonly IImageResultRepository imageResultRepository;
 
         public ImageUploadedFunction(
-            IObjectDetectionService objectDetectionService,
-            IEventGridService eventGridService,
-            IImageResultRepository imageResultRepository)
+            IObjectDetectionService objectDetectionService)
         {
             this.objectDetectionService = objectDetectionService ?? throw new System.ArgumentNullException(nameof(objectDetectionService));
-            this.eventGridService = eventGridService ?? throw new System.ArgumentNullException(nameof(eventGridService));
-            this.imageResultRepository = imageResultRepository ?? throw new System.ArgumentNullException(nameof(imageResultRepository));
         }
 
         [FunctionName("ImageUploadedFunction")]
         public async Task ImageUploadedRun(
-            [EventGridTrigger] EventGridEvent eventGridEvent,
-            [Blob("{data.url}", FileAccess.Read, Connection = "AzureBlobStorageConnectionString")] Stream inputImage,
+            [QueueTrigger("image-uploaded-queue", Connection = "ImageUploadedQueueStorageConnectionString")] EventGridEvent blobCreatedQueueItem,
+            [Queue("processed-image-queue", Connection = "ProcessedImageQueueStorageConnectionString")] IAsyncCollector<string> processedImageQueue,
+            [Queue("person-detected-queue", Connection = "PersonDetectedQueueStorageConnectionString")] IAsyncCollector<string> personDetectedQueue,
+            [Blob("{data.url}", FileAccess.Read, Connection = "ImageStorageConnectionString")] Stream inputImage,
             ILogger log)
         {
-            log.LogInformation(eventGridEvent.Data.ToString());
+            log.LogInformation(blobCreatedQueueItem.Data.ToString());
 
             var detectionResult = await objectDetectionService.DetectObjectsAsync(inputImage);
 
@@ -46,29 +43,43 @@ namespace Surveillance.Function.ImageProcessing
                 .Where(o => o.ObjectProperty.ToLower().Contains(ObjectPersonIdentifier));
             if (detectedPersons.Any())
             {
-                log.LogInformation("Publish person detected event...");
+                log.LogInformation("Add message to person detected queue...");
 
                 double maxConfidence = detectedPersons.Max(p => p.Confidence);
-                var personDetectedEvent = new PersonDetectedEvent(maxConfidence, eventGridEvent.EventTime);
-                await eventGridService.PublishEventAsync(personDetectedEvent);
+
+                PersonDetectedMessage personDetectedMessage = new PersonDetectedMessage
+                {
+                    Confidence = maxConfidence,
+                    Timestamp = blobCreatedQueueItem.EventTime
+                };
+
+                await personDetectedQueue.AddAsync(JsonConvert.SerializeObject(personDetectedMessage));
             }
             else
             {
                 log.LogInformation("No person detected.");
             }
 
-            log.LogInformation("Store image detection result...");
+            log.LogInformation("Add message to processed image queue...");
 
+            var deserializedEventData = JsonConvert.DeserializeObject<BlobCreatedEventData>(blobCreatedQueueItem.Data.ToString());
 
-            var deserializedEventData = JsonConvert.DeserializeObject<BlobCreatedEventData>(eventGridEvent.Data.ToString());
+            ProcessedImageMessage message = new ProcessedImageMessage
+            {
+                ImageUrl = deserializedEventData.Url,
+                DetectedPersons = detectedPersons.Count(),
+                Timestamp = blobCreatedQueueItem.EventTime,
+                DetectResult = new DetectResult
+                {
+                    RequestId = detectionResult.RequestId,
+                    ModelVersion = detectionResult.ModelVersion,
+                    Metadata = detectionResult.Metadata.ToModel(),
+                    Objects = detectionResult.Objects.Select(o => o.ToModel()).ToList()
+                }
+            };
 
-            var entity = new ImageResultEntity(
-                deserializedEventData.Url,
-                detectedPersons.Count(),
-                eventGridEvent.EventTime,
-                detectionResult);
-            await imageResultRepository.StoreResultAsync(entity);
-
+            await processedImageQueue.AddAsync(JsonConvert.SerializeObject(message));
+                        
             log.LogInformation("Finished image uploaded processing.");
         }
     }

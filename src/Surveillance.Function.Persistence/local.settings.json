@@ -8,13 +8,9 @@
     "AzureKeyVaultUri": "https://surveillance-keyvault.vault.azure.net/",
     "AzureAppConfigSecretKey": "AzureAppConfigurationConnectionString",
 
-    "ImageUploadedQueueStorageConnectionString": null,
     "ProcessedImageQueueStorageConnectionString": null,
-    "PersonDetectedQueueStorageConnectionString": null,
-    "ImageStorageConnectionString": null,
-    "CognitiveServicesEndpoint": null,
-    "CognitiveServicesApiKey": null,
-    "EventGridTopicEndpoint": null,
-    "EventGridTopicKey": null
+    "CosmosDbConnectionString": null,
+    "CosmosDbDatabaseName": null,
+    "CosmosDbContainer": null
   }
 }

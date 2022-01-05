@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
-using Surveillance.Function.ImageProcessing.Infrastructure.Interface;
-using Surveillance.Function.ImageProcessing.Models;
+using Surveillance.Function.Persistence.Models;
 
-namespace Surveillance.Function.ImageProcessing.Infrastructure
+namespace Surveillance.Function.Persistence.Infrastructure
 {
     internal class ImageResultRepository : IImageResultRepository
     {

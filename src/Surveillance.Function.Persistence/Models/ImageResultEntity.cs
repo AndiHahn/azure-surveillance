@@ -1,8 +1,8 @@
 ﻿using System;
-using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Newtonsoft.Json;
+using Surveillance.Shared.Models;
 
-namespace Surveillance.Function.ImageProcessing.Models
+namespace Surveillance.Function.Persistence.Models
 {
     public class ImageResultEntity : BaseDocumentEntity
     {
