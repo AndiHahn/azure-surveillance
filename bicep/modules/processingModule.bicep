@@ -17,6 +17,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   }
   properties: {
     publicNetworkAccess: 'Enabled'
+    restore: true
   }
 }
 
