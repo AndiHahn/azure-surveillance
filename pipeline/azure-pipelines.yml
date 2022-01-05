@@ -21,6 +21,12 @@ stages:
   - job: build_and_publish_backend
     steps:
     - task: NuGetToolInstaller@1
+    
+    - task: CopyFiles@2
+      displayName: "Copy bicep files to Staging Directory"
+      inputs:
+        sourceFolder: bicep/
+        targetFolder: "$(Build.ArtifactStagingDirectory)/"
 
     - task: NuGetCommand@2
       inputs:
