@@ -29,24 +29,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
           ]
         }
       }
-      {
-        objectId: 'dbddb398-e6f8-49fa-9413-68df9aecbdf1'
-        tenantId: tenant().tenantId
-        permissions: {
-          certificates: [
-            'all'
-          ]
-          keys: [
-            'all'
-          ]
-          secrets: [
-            'all'
-          ]
-          storage: [
-            'all'
-          ]
-        }
-      }
     ]
   }
 }
