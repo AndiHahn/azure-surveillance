@@ -11,7 +11,7 @@ variables:
   buildPlatform: "Any CPU"
   buildConfiguration: "Release"
   azureServiceConnection: "azure-rm-surv-connection"
-  bicepTemplateFile: "../bicep/main.bicep"
+  bicepTemplateFile: "bicep/main.bicep"
   releaseTemplate: "release-template.yml"
 
 stages:
@@ -78,7 +78,6 @@ stages:
         azureSubscription: $(azureServiceConnection)
         scriptType: bash
         scriptLocation: inlineScript
-        workingDirectory: '$(System.ArtifactsDirectory)'
         inlineScript: |
           az deployment sub create --location "westeurope" --template-file $(bicepTemplateFile)
 
