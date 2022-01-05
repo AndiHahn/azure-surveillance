@@ -21,7 +21,7 @@ stages:
   - job: build_and_publish_backend
     steps:
     - task: NuGetToolInstaller@1
-    
+
     - task: CopyFiles@2
       displayName: "Copy bicep files to Staging Directory"
       inputs:
@@ -66,6 +66,12 @@ stages:
   jobs:
   - job: Bicep_infrastructure_provisioning
     steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Downloading artifact'
+      inputs:
+        buildType: 'current'
+        artifact: drop
+        targetPath: '$(System.ArtifactsDirectory)'
     - task: AzureCLI@2
       inputs:
         azureSubscription: $(azureServiceConnection)
