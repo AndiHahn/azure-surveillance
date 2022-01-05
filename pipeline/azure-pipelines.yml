@@ -79,7 +79,7 @@ stages:
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
-          az deployment sub create --location "westeurope" --template-file $(bicepTemplateFile)
+          az deployment group create --resource-group surveillance-auto --template-file $(bicepTemplateFile)
 
 - stage: 'Prod'
   displayName: 'Prod Deployment'
