@@ -74,6 +74,7 @@ stages:
         targetPath: '$(System.ArtifactsDirectory)'
 
     - task: AzureCLI@2
+      displayName: 'Run bicep infrastructure provisioning'
       inputs:
         azureSubscription: $(azureServiceConnection)
         scriptType: bash

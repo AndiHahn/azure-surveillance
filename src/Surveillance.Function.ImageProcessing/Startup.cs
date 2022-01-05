@@ -44,7 +44,7 @@ namespace Surveillance.Function.ImageProcessing
                 ExcludeAzurePowerShellCredential = true,
                 ExcludeEnvironmentCredential = true,
                 ExcludeInteractiveBrowserCredential = true,
-                ExcludeManagedIdentityCredential = true,
+                ExcludeManagedIdentityCredential = false,
                 ExcludeSharedTokenCacheCredential = true,
                 ExcludeVisualStudioCodeCredential = true,
                 ExcludeVisualStudioCredential = false

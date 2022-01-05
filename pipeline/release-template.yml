@@ -22,12 +22,14 @@ jobs:
               artifact: drop
               targetPath: '$(System.ArtifactsDirectory)'
           - task: AzureFunctionApp@1
+            displayName: 'Deploy image processing function'
             inputs:
               azureSubscription: azure-rm-surv-connection
               appType: functionAppWindows
               appName: surv-image-processing
               package: $(System.ArtifactsDirectory)/**/Surveillance.Function.ImageProcessing.zip 
           - task: AzureFunctionApp@1
+            displayName: 'Deploy persistence function'
             inputs:
               azureSubscription: azure-rm-surv-connection
               appType: functionAppWindows
