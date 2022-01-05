@@ -72,11 +72,13 @@ stages:
         buildType: 'current'
         artifact: drop
         targetPath: '$(System.ArtifactsDirectory)'
+
     - task: AzureCLI@2
       inputs:
         azureSubscription: $(azureServiceConnection)
         scriptType: bash
         scriptLocation: inlineScript
+        workingDirectory: '$(System.ArtifactsDirectory)'
         inlineScript: |
           az deployment sub create --location "westeurope" --template-file $(bicepTemplateFile)
 
