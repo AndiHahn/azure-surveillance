@@ -1,5 +1,5 @@
 {
-  "resource-group": "suv-test",
+  "resource-group": "surveillance-auto",
   "app-config-resource-name": "surv-app-config",
   "key-vault-resource-name": "surv-keyvault",
   "admin-aad-user-object-id": "f53ecc73-e727-41f2-879f-fff583c817ee"
