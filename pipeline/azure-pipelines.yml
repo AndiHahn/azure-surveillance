@@ -16,7 +16,7 @@ variables:
 
 stages:
 - stage: CI
-  displayName: build
+  displayName: CI
   jobs: 
   - job: build_and_publish_backend
     steps:
@@ -60,8 +60,8 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: "Publish Artifact"
 
-- stage: 'Infrastructure'
-  displayName: 'Infrastructure provisioning'
+- stage: 'IaC'
+  displayName: 'IaC'
   dependsOn: CI
   jobs:
   - job: Bicep_infrastructure_provisioning
@@ -74,7 +74,7 @@ stages:
         targetPath: '$(System.ArtifactsDirectory)'
 
     - task: AzureCLI@2
-      displayName: 'Run bicep infrastructure provisioning'
+      displayName: 'Bicep infrastructure provisioning'
       inputs:
         azureSubscription: $(azureServiceConnection)
         scriptType: bash
@@ -82,9 +82,9 @@ stages:
         inlineScript: |
           az deployment group create --resource-group surveillance-auto --template-file $(bicepTemplateFile)
 
-- stage: 'Prod'
-  displayName: 'Prod Deployment'
-  dependsOn: Infrastructure
+- stage: 'CD'
+  displayName: 'CD'
+  dependsOn: IaC
   jobs:
   - template: ${{ variables.releaseTemplate }}
     parameters:
