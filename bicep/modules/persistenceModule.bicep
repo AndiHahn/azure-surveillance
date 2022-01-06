@@ -1,7 +1,15 @@
+param queueStorageConnectionString string
+
 module resultPersistenceFunction 'shared/functionAppServerless.bicep' = {
   name: 'resultPersistenceFunction'
   params: {
     functionAppName: 'surv-persistence'
+    additionalAppSettings: [
+      {
+        name: 'ProcessedImageQueueStorageConnectionString'
+        value: queueStorageConnectionString
+      }
+    ]
   }
 }
 

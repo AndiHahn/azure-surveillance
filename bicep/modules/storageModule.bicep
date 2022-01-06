@@ -9,22 +9,6 @@ resource imageStorage 'Microsoft.Storage/storageAccounts@2021-02-01' = {
 
 var imageStorageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${imageStorage.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${imageStorage.listKeys().keys[0].value}'
 
-module imageStorageSecret 'shared/keyvaultsecret.bicep' = {
-  name: 'imageStorageSecret'
-  params: {
-    secretKey: 'AzureBlobStorageConnectionString'
-    secretValue: imageStorageConnectionString
-  }
-}
-
-module imageStorageConfig 'shared/appConfigVaultRef.bicep' = {
-  name: 'imageStorageConfig'
-  params: {
-    key: 'ImageStorageConnectionString'
-    secretName: 'AzureBlobStorageConnectionString'
-  }
-}
-
 resource queueStorage 'Microsoft.Storage/storageAccounts@2021-02-01' = {
   name: 'survqueuestorage'
   location: resourceGroup().location
@@ -35,38 +19,6 @@ resource queueStorage 'Microsoft.Storage/storageAccounts@2021-02-01' = {
 }
 
 var queueStorageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${queueStorage.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${queueStorage.listKeys().keys[0].value}'
-
-module queueStorageSecret 'shared/keyvaultsecret.bicep' = {
-  name: 'keyVaultSecretQueueStorage'
-  params: {
-    secretKey: 'QueueStorageConnectionString'
-    secretValue: queueStorageConnectionString
-  }
-}
-
-module imageUploadedQueueStorageConfig 'shared/appConfigVaultRef.bicep' = {
-  name: 'imageUploadedQueueStorageConfig'
-  params: {
-    key: 'ImageUploadedQueueStorageConnectionString'
-    secretName: 'QueueStorageConnectionString'
-  }
-}
-
-module processedImageQueueStorageConfig 'shared/appConfigVaultRef.bicep' = {
-  name: 'processedImageQueueStorageConfig'
-  params: {
-    key: 'ProcessedImageQueueStorageConnectionString'
-    secretName: 'QueueStorageConnectionString'
-  }
-}
-
-module personDetectedQueueStorageConfig 'shared/appConfigVaultRef.bicep' = {
-  name: 'personDetectedQueueStorageConfig'
-  params: {
-    key: 'PersonDetectedQueueStorageConnectionString'
-    secretName: 'QueueStorageConnectionString'
-  }
-}
 
 resource queueStorageImageUploadedQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-06-01' = {
   name: '${queueStorage.name}/default/image-uploaded-queue'
@@ -139,3 +91,6 @@ resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@
     }
   }
 }
+
+output imageStorageConnectionString string = imageStorageConnectionString
+output queueStorageConnectionString string = queueStorageConnectionString

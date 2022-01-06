@@ -5,7 +5,7 @@ module core 'modules/coreModule.bicep' = {
   scope: resourceGroup(config['resource-group'])
 }
 
-module storageAcct 'modules/storageModule.bicep' = {
+module storages 'modules/storageModule.bicep' = {
   name: 'storageModule'
   scope: resourceGroup(config['resource-group'])
   dependsOn: [
@@ -19,6 +19,10 @@ module processing 'modules/processingModule.bicep' = {
   dependsOn: [
     core
   ]
+  params: {
+    imageStorageConnectionString: storages.outputs.imageStorageConnectionString
+    queueStorageConnectionString: storages.outputs.queueStorageConnectionString
+  }
 }
 
 module persistence 'modules/persistenceModule.bicep' = {
@@ -27,4 +31,7 @@ module persistence 'modules/persistenceModule.bicep' = {
   dependsOn: [
     core
   ]
+  params: {
+    queueStorageConnectionString: storages.outputs.queueStorageConnectionString
+  }
 }

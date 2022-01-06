@@ -20,26 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{3EC9BDC7-4E63-4028-9EA1-72B4B31785F5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{0DC0BF6F-2F74-42CA-AEDF-A42A946C9AB6}"
-	ProjectSection(SolutionItems) = preProject
-		bicep\bicepconfig.json = bicep\bicepconfig.json
-		bicep\main.bicep = bicep\main.bicep
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{9716FD8A-5AA8-4A16-9C99-76021068D763}"
-	ProjectSection(SolutionItems) = preProject
-		bicep\modules\core.bicep = bicep\modules\core.bicep
-		bicep\modules\function.bicep = bicep\modules\function.bicep
-		bicep\modules\storage.bicep = bicep\modules\storage.bicep
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{642062A5-3648-493A-A40B-60C1C48BE10C}"
-	ProjectSection(SolutionItems) = preProject
-		bicep\modules\shared\keyvaultpolicy.bicep = bicep\modules\shared\keyvaultpolicy.bicep
-		bicep\modules\shared\keyvaultsecret.bicep = bicep\modules\shared\keyvaultsecret.bicep
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surveillance.Shared", "src\Surveillance.Shared\Surveillance.Shared.csproj", "{44247B15-A7DE-44EC-8F93-AD36D5688AB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Surveillance.Shared", "src\Surveillance.Shared\Surveillance.Shared.csproj", "{44247B15-A7DE-44EC-8F93-AD36D5688AB9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Surveillance.Function.Persistence", "src\Surveillance.Function.Persistence\Surveillance.Function.Persistence.csproj", "{18605BB8-FA7A-4316-A1B7-E4DA9A310DFD}"
 EndProject
@@ -69,9 +50,6 @@ Global
 		{2FE555D2-0510-4695-84E9-7E9DEDE6F83E} = {D452B7BA-65D5-438C-8FE4-4F6D39C870BA}
 		{189FC334-1D62-4A25-985D-C98E75E1EFC4} = {3EC9BDC7-4E63-4028-9EA1-72B4B31785F5}
 		{0C439F85-B565-4688-B1E3-F3D6FD68C5BC} = {3EC9BDC7-4E63-4028-9EA1-72B4B31785F5}
-		{0DC0BF6F-2F74-42CA-AEDF-A42A946C9AB6} = {3EC9BDC7-4E63-4028-9EA1-72B4B31785F5}
-		{9716FD8A-5AA8-4A16-9C99-76021068D763} = {0DC0BF6F-2F74-42CA-AEDF-A42A946C9AB6}
-		{642062A5-3648-493A-A40B-60C1C48BE10C} = {9716FD8A-5AA8-4A16-9C99-76021068D763}
 		{44247B15-A7DE-44EC-8F93-AD36D5688AB9} = {D452B7BA-65D5-438C-8FE4-4F6D39C870BA}
 		{18605BB8-FA7A-4316-A1B7-E4DA9A310DFD} = {D452B7BA-65D5-438C-8FE4-4F6D39C870BA}
 	EndGlobalSection

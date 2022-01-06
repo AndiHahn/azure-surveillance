@@ -1,7 +1,28 @@
+param imageStorageConnectionString string
+param queueStorageConnectionString string
+
 module imageProcessingFunction 'shared/functionAppServerless.bicep' = {
   name: 'imageProcessingFunction'
   params: {
     functionAppName: 'surv-image-processing'
+    additionalAppSettings: [
+      {
+        name: 'ImageUploadedQueueStorageConnectionString'
+        value: queueStorageConnectionString
+      }
+      {
+        name: 'ProcessedImageQueueStorageConnectionString'
+        value: queueStorageConnectionString
+      }
+      {
+        name: 'PersonDetectedQueueStorageConnectionString'
+        value: queueStorageConnectionString
+      }
+      {
+        name: 'ImageStorageConnectionString'
+        value: imageStorageConnectionString
+      }
+    ]
   }
 }
 

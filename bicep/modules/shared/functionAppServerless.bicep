@@ -1,4 +1,5 @@
 param functionAppName string
+param additionalAppSettings array = []
 
 var config = json(loadTextContent('../../bicepconfig.json'))
 
@@ -37,6 +38,43 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2020-10-01' = {
   }
 }
 
+var predefinedAppSettings = [
+  {
+    name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+    value: appInsights.properties.InstrumentationKey
+  }
+  {
+    name: 'AzureWebJobsStorage'
+    value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
+  }
+  {
+    name: 'FUNCTIONS_EXTENSION_VERSION'
+    value: '~3'
+  }
+  {
+    name: 'FUNCTIONS_WORKER_RUNTIME'
+    value: 'dotnet'
+  }
+  {
+    name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
+    value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
+  }
+  {
+    name: 'Environment'
+    value: 'prod'
+  }
+  {
+    name: 'AzureKeyVaultUri'
+    value: 'https://${config['key-vault-resource-name']}${environment().suffixes.keyvaultDns}/'
+  }
+  {
+    name: 'AzureAppConfigSecretKey'
+    value: 'AzureAppConfigurationConnectionString'
+  }
+]
+
+var appSettings = concat(predefinedAppSettings, additionalAppSettings)
+
 resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
   name: functionAppName
   location: location
@@ -49,40 +87,7 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
     serverFarmId: hostingPlan.id
     clientAffinityEnabled: true
     siteConfig: {
-      appSettings: [
-        {
-          'name': 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          'value': appInsights.properties.InstrumentationKey
-        }
-        {
-          name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
-        }
-        {
-          'name': 'FUNCTIONS_EXTENSION_VERSION'
-          'value': '~3'
-        }
-        {
-          'name': 'FUNCTIONS_WORKER_RUNTIME'
-          'value': 'dotnet'
-        }
-        {
-          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
-        }
-        {
-          name: 'Environment'
-          value: 'prod'
-        }
-        {
-          name: 'AzureKeyVaultUri'
-          value: 'https://${config['key-vault-resource-name']}${environment().suffixes.keyvaultDns}/'
-        }
-        {
-          name: 'AzureAppConfigSecretKey'
-          value: 'AzureAppConfigurationConnectionString'
-        }
-      ]
+      appSettings: appSettings
     }
   }
 }
