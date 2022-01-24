@@ -35,3 +35,10 @@ jobs:
               appType: functionAppWindows
               appName: surv-persistence
               package: $(System.ArtifactsDirectory)/**/Surveillance.Function.Persistence.zip 
+          - task: AzureFunctionApp@1
+            displayName: 'Deploy persistence function'
+            inputs:
+              azureSubscription: azure-rm-surv-connection
+              appType: functionAppWindows
+              appName: surv-notification
+              package: $(System.ArtifactsDirectory)/**/Surveillance.Function.Notification.zip 

@@ -57,6 +57,15 @@ stages:
           **/Surveillance.Function.Persistence.csproj
         arguments: "--no-build --configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/"
 
+    - task: DotNetCoreCLI@2
+      displayName: Publish Notification Azure Function
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: |
+          **/Surveillance.Function.Notification.csproj
+        arguments: "--no-build --configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/"
+
     - task: PublishBuildArtifacts@1
       displayName: "Publish Artifact"
 
