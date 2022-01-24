@@ -37,3 +37,15 @@ module persistence 'modules/persistenceModule.bicep' = {
     queueStorageConnectionString: storages.outputs.queueStorageConnectionString
   }
 }
+
+module notification 'modules/notificationModule.bicep' = {
+  name: 'notificationModule'
+  scope: resourceGroup(config['resource-group'])
+  dependsOn: [
+    core
+    persistence
+  ]
+  params: {
+    queueStorageConnectionString: storages.outputs.queueStorageConnectionString
+  }
+}
