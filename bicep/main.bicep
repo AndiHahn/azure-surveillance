@@ -18,6 +18,7 @@ module processing 'modules/processingModule.bicep' = {
   scope: resourceGroup(config['resource-group'])
   dependsOn: [
     core
+    storages
   ]
   params: {
     imageStorageConnectionString: storages.outputs.imageStorageConnectionString
@@ -30,6 +31,7 @@ module persistence 'modules/persistenceModule.bicep' = {
   scope: resourceGroup(config['resource-group'])
   dependsOn: [
     core
+    processing
   ]
   params: {
     queueStorageConnectionString: storages.outputs.queueStorageConnectionString
