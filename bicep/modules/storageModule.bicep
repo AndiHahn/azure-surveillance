@@ -7,6 +7,13 @@ resource imageStorage 'Microsoft.Storage/storageAccounts@2021-02-01' = {
   }
 }
 
+resource cameraContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-06-01' = {
+  name: '${imageStorage.name}/default/camera'
+  properties: {
+    publicAccess: 'None'
+  }
+}
+
 var imageStorageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${imageStorage.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${imageStorage.listKeys().keys[0].value}'
 
 resource queueStorage 'Microsoft.Storage/storageAccounts@2021-02-01' = {

@@ -62,6 +62,25 @@ resource db 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-10-15' = {
   }
 }
 
+resource collection 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-10-15' = {
+  name: '${db.name}/surveillance-container'
+  properties: {
+    resource: {
+      id: 'surveillance-container'
+      partitionKey: {
+        kind: 'Hash'
+        paths: [
+          '/PartitionKey'
+        ]
+      }
+      conflictResolutionPolicy: {
+        conflictResolutionPath: '/_ts'
+        mode: 'LastWriterWins'
+      }
+    }
+  }
+}
+
 module secret 'shared/keyvaultsecret.bicep' = {
   name: 'secret'
   params: {

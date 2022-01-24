@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Microsoft.Extensions.Options;
-using Microsoft.Rest;
 using Surveillance.Function.ImageProcessing.Infrastructure.Interface;
 
 namespace Surveillance.Function.ImageProcessing.Infrastructure
@@ -17,9 +16,6 @@ namespace Surveillance.Function.ImageProcessing.Infrastructure
         public ObjectDetectionService(IOptions<AppConfiguration> options)
         {
             this.appConfiguration = options?.Value ?? throw new ArgumentNullException(nameof(options));
-
-            ServiceClientCredentials credentials = new ApiKeyServiceClientCredentials(options.Value.CognitiveServicesApiKey);
-
             this.visionClient = new Lazy<ComputerVisionClient>(CreateComputerVisionClient);
         }
 

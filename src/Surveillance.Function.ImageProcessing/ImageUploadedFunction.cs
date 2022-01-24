@@ -40,7 +40,8 @@ namespace Surveillance.Function.ImageProcessing
             var detectionResult = await objectDetectionService.DetectObjectsAsync(inputImage);
 
             var detectedPersons = detectionResult.Objects
-                .Where(o => o.ObjectProperty.ToLower().Contains(ObjectPersonIdentifier));
+                .Where(o => o.ObjectProperty.ToLower().Contains(ObjectPersonIdentifier) &&
+                            o.Confidence > ThresholdPersonDetected);
             if (detectedPersons.Any())
             {
                 log.LogInformation("Add message to person detected queue...");
