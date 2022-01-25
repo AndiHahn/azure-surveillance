@@ -42,7 +42,7 @@ jobs:
               resourceGroupName: surveillance-auto
               slotName: staging
           - task: AzureFunctionApp@1
-            displayName: 'Deploy persistence function'
+            displayName: 'Deploy notification function'
             inputs:
               azureSubscription: azure-rm-surv-connection
               appType: functionAppWindows
@@ -52,6 +52,7 @@ jobs:
               resourceGroupName: surveillance-auto
               slotName: staging
           - task: AzureAppServiceManage@0
+            displayName: 'Swap image processing function slot'
             inputs:
               azureSubscription: azure-rm-surv-connection
               WebAppName: surv-image-processing
@@ -59,6 +60,7 @@ jobs:
               SourceSlot: staging
               SwapWithProduction: true
           - task: AzureAppServiceManage@0
+            displayName: 'Swap persistence function slot'
             inputs:
               azureSubscription: azure-rm-surv-connection
               WebAppName: surv-persistence
@@ -66,6 +68,7 @@ jobs:
               SourceSlot: staging
               SwapWithProduction: true
           - task: AzureAppServiceManage@0
+            displayName: 'Swap notification function slot'
             inputs:
               azureSubscription: azure-rm-surv-connection
               WebAppName: surv-notification
