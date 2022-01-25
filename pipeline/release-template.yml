@@ -28,6 +28,9 @@ jobs:
               appType: functionAppWindows
               appName: surv-image-processing
               package: $(System.ArtifactsDirectory)/**/Surveillance.Function.ImageProcessing.zip 
+              deployToSlotOrASE: true
+              resourceGroupName: surveillance-auto
+              slotName: staging
           - task: AzureFunctionApp@1
             displayName: 'Deploy persistence function'
             inputs:
@@ -35,6 +38,9 @@ jobs:
               appType: functionAppWindows
               appName: surv-persistence
               package: $(System.ArtifactsDirectory)/**/Surveillance.Function.Persistence.zip 
+              deployToSlotOrASE: true
+              resourceGroupName: surveillance-auto
+              slotName: staging
           - task: AzureFunctionApp@1
             displayName: 'Deploy persistence function'
             inputs:
@@ -42,3 +48,27 @@ jobs:
               appType: functionAppWindows
               appName: surv-notification
               package: $(System.ArtifactsDirectory)/**/Surveillance.Function.Notification.zip 
+              deployToSlotOrASE: true
+              resourceGroupName: surveillance-auto
+              slotName: staging
+          - task: AzureAppServiceManage@0
+            inputs:
+              azureSubscription: azure-rm-surv-connection
+              WebAppName: surv-image-processing
+              ResourceGroupName: surveillance-auto
+              SourceSlot: staging
+              SwapWithProduction: true
+          - task: AzureAppServiceManage@0
+            inputs:
+              azureSubscription: azure-rm-surv-connection
+              WebAppName: surv-persistence
+              ResourceGroupName: surveillance-auto
+              SourceSlot: staging
+              SwapWithProduction: true
+          - task: AzureAppServiceManage@0
+            inputs:
+              azureSubscription: azure-rm-surv-connection
+              WebAppName: surv-notification
+              ResourceGroupName: surveillance-auto
+              SourceSlot: staging
+              SwapWithProduction: true
