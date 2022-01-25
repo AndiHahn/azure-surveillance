@@ -37,7 +37,7 @@ namespace Surveillance.Function.Notification
                 ReceiverName = this.appConfiguration.ReceiverName,
                 ReceiverEmail = this.appConfiguration.ReceiverEmail,
                 Subject = "Person detected",
-                Message = "Hello $firstname$,\r\n\r\nA person was detected at: $timestamp$ with a probability of $probability$.\r\n\r\nBest regards,\r\nYour surveillance system",
+                Message = "Hello $firstname$,\r\n\r\nA person was detected at: $timestamp$, with a probability of $probability$%\r\n\r\nBest regards,\r\nYour surveillance system",
                 Substitutions = new Dictionary<string, string>
                 {
                     { "$firstname$", this.appConfiguration.ReceiverName.Split(" ").FirstOrDefault() },

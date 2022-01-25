@@ -105,3 +105,31 @@ module keyVaultAccess 'keyvaultpolicy.bicep' = {
     principalId: functionApp.identity.principalId
   }
 }
+
+resource stagingSlot 'Microsoft.Web/sites/slots@2021-02-01' = {
+  name: '${functionApp.name}/staging'
+  location: resourceGroup().location
+  identity: {
+    type: 'SystemAssigned'
+  }
+  kind: 'functionapp'
+  properties: {
+    enabled: true
+    hostNameSslStates: [
+      {
+        name: 'surv-image-processing-staging.azurewebsites.net'
+        sslState: 'Disabled'
+        hostType: 'Standard'
+      }
+      {
+        name: 'surv-image-processing-staging.scm.azurewebsites.net'
+        sslState: 'Disabled'
+        hostType: 'Repository'
+      }
+    ]
+    serverFarmId: ''
+    storageAccountRequired: false
+    httpsOnly: true
+    keyVaultReferenceIdentity: 'SystemAssigned'
+  }
+}
