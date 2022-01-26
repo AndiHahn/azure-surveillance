@@ -10,8 +10,8 @@ namespace Surveillance.ConsoleClient
 {
     internal class Program
     {
-        private const int nrOfMessagesWithoutPerson = 10;
-        private const int nrOfMessagesWithPerson = 1;
+        private const int nrOfMessagesWithoutPerson = 5000;
+        private const int nrOfMessagesWithPerson = 0;
 
         private static readonly string[] availableImagesWithPerson = new[]
         {
