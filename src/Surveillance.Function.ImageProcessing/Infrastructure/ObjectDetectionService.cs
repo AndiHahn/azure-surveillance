@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Microsoft.Extensions.Options;
-using Surveillance.Function.ImageProcessing.Infrastructure.Interface;
-
 namespace Surveillance.Function.ImageProcessing.Infrastructure
 {
     internal class ObjectDetectionService : IObjectDetectionService

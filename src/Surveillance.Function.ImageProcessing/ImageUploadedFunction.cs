@@ -7,7 +7,7 @@ using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Surveillance.Function.ImageProcessing.Infrastructure.Interface;
+using Surveillance.Function.ImageProcessing.Infrastructure;
 using Surveillance.Function.ImageProcessing.Models;
 using Surveillance.Shared.Models;
 using Surveillance.Shared.Queue;

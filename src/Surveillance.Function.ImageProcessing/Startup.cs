@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.DependencyInjection;
 using Surveillance.Function.ImageProcessing;
 using Surveillance.Function.ImageProcessing.Infrastructure;
-using Surveillance.Function.ImageProcessing.Infrastructure.Interface;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace Surveillance.Function.ImageProcessing
